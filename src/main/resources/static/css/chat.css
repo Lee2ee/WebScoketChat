@@ -1,0 +1,19 @@
+#chatRoom {
+    display: flex;
+    flex-direction: column;
+    height: 80vh;
+}
+
+#messages {
+    flex: 1;
+    overflow-y: auto;
+    margin-bottom: 10px;
+}
+
+#messageForm {
+    display: flex;
+}
+
+#message {
+    flex: 1;
+}
