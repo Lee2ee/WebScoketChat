@@ -61,8 +61,20 @@
 - `src/main/resources/static/css` - CSS 파일
 - `src/main/resources/static/js` - JavaScript 파일
 
-![스크린샷(1)](https://github.com/Lee2ee/WebScoketChat/assets/89178750/504a2d2d-666d-48f6-814d-4f985c3de189)
+---
 
+### 추가할 만한 기능
+- 소셜 로그인
+- 파일 전송 기능
+- 채팅방 관리 기능
+- 사용자 프로필
+- 메시지 읽음 확인
+- 알림 기능
+- 메시지 검색 기능
+- 이모티콘 및 스티커
+
+ ---
+![스크린샷(1)](https://github.com/Lee2ee/WebScoketChat/assets/89178750/504a2d2d-666d-48f6-814d-4f985c3de189)
 
 ![스크린샷(2)](https://github.com/Lee2ee/WebScoketChat/assets/89178750/a31a13bc-53d5-47d4-aa4d-862962d31676)
 
