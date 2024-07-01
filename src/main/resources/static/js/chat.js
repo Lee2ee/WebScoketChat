@@ -1,30 +1,33 @@
 var stompClient = null;
+var username = null;
 
-// 채팅 연결
+// 사용자가 채팅에 연결할 때 호출되는 함수
 function connect() {
-    // SockJS를 사용하여 '/ws' 엔드포인트에 소켓 연결을 생성
+    username = $("#username").val(); // 사용자 이름 저장
     var socket = new SockJS('/ws');
     stompClient = Stomp.over(socket);
-    // 소켓 연결 설정
     stompClient.connect({}, function(frame) {
-        // 연결이 성공하면 사용자 이름 입력 폼을 숨기고 채팅 방을 표시
         $("#usernameForm").hide();
         $("#chatRoom").show();
-        // 서버에서 '/topic/public' 채널로 보내는 메시지를 구독
         stompClient.subscribe('/topic/public', function(chatMessage) {
             showMessage(JSON.parse(chatMessage.body));
         });
     });
+
+    // 메시지 입력 필드에 엔터키 이벤트 리스너 추가
+    $("#message").on("keyup", function(event) {
+        if (event.key === "Enter" || event.keyCode === 13) {
+            sendMessage();
+        }
+    });
 }
 
-// 메시지 전송
+// 사용자가 메시지를 전송할 때 호출되는 함수
 function sendMessage() {
     var messageContent = $("#message").val();
-    // 메시지 내용이 있고, STOMP 클라이언트가 연결되어 있을 경우
     if(messageContent && stompClient) {
-        // 사용자 이름과 메시지 내용을 포함한 객체 생성
         var chatMessage = {
-            username: $("#username").val(),
+            username: username,
             content: messageContent
         };
         stompClient.send("/app/chat.sendMessage", {}, JSON.stringify(chatMessage));
@@ -34,6 +37,12 @@ function sendMessage() {
 
 // 새로운 채팅 메시지를 화면에 표시하는 함수
 function showMessage(message) {
-    // 메시지 목록에 새로운 메시지를 추가 (HTML 형태로)
-    $("#messages").append("<li><strong>" + message.username + ":</strong> " + message.content + "</li>");
+    var isOwnMessage = message.username === username;
+    var messageElement = $("<li>").addClass(isOwnMessage ? "own-message" : "other-message");
+
+    var messageWrapper = $("<div>").addClass("message-wrapper");
+    messageWrapper.append("<strong>" + message.username + ":</strong> " + message.content);
+
+    messageElement.append(messageWrapper);
+    $("#messages").append(messageElement);
 }
